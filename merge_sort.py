@@ -1,71 +1,35 @@
-def merge_sort(list):
-    """
-    Sorts a list in ascending order
-    Returns a new sorted list
-    Divide: find the mid point of the list and divide into sublists
-    Conquer: Recursively sort the sublists created in previous step
-    combine: merge the sorted sublists created in previous step
-    """
-    
-    if len(list) <= 1:
-        return list
-    
-    left_half, right_half = split(list)
-    left = merge_sort(left_half)
-    right = merge_sort(right_half)
-    
-    return merge(left, right)
+import sys
+from load import load_numbers
 
-def split(list):
-    """
-    Divide the unsorted list at midpoint
-    Returns two sublists - left and right
-    """
+numbers = load_numbers("unsorted.txt")
 
-    mid = len(list)//2
-    left = list[:mid]
-    right = list[mid:]
-    
-    return left, right
-
-def merge(left, right):
-    """
-    Merges two lists (arrays), sorting them in the process
-    Returns a new merged list
-    """    
-    l = []
-    i = 0
-    j = 0
-    
-    while i < len(left) and j < len(right):
-        if left[i] < right[j]:
-            l.append(left[i])
-            i += 1
+def merge_sort(values):
+    if len(values) <= 1:
+        return values
+    middle_index = len(values)//2
+    left_values = merge_sort(values[:middle_index])
+    right_values = merge_sort(values[middle_index:])
+    sorted_values = []
+    left_index = 0
+    right_index = 0
+    while left_index < len(left_values) and right_index < len(right_values):
+        if left_values[left_index] < right_values[right_index]:
+            sorted_values.append(left_values[left_index])
+            left_index += 1
         else:
-            l.append(right[j])
-            j += 1
-            
-    while i < len(left):
-            l.append(left[i])
-            i+=1
+            sorted_values.append(right_values[right_index])
+            right_index += 1
+    sorted_values += left_values[left_index:]
+    sorted_values += right_values[right_index:]
+    return sorted_values
+
+sorted_numbers = merge_sort(numbers)
+print(sorted_numbers)
         
-    while j < len(right):
-            l.append(right[j])
-            j+=1
-    return l
-        
-alist = [45, 54, 4, 99, 31, 765, 543]
-l = merge_sort(alist)
-print(l)
-
-def verify_sorted(list):
-    n = len(list)
     
-    if n == 0 or n == 1:
-        return True
     
-    return list[0] < list[1] and verify_sorted(list[1:])
-
-
-print(verify_sorted(alist))
-print(verify_sorted(l))
+    
+    
+    
+    
+    
